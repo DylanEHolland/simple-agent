@@ -2,7 +2,7 @@ from os import name
 from typing import Literal, Mapping
 from fastapi import FastAPI, Request
 
-from agent.helpers import get_note_from_db, get_user_from_db, save_note, search_from_query
+from agent.helpers import get_user_from_db, search_from_query
 
 app = FastAPI()
 
@@ -69,13 +69,3 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
     print("got here:", user)
 
     return output
-
-
-        # "conversation_config_override": {
-        #     "agent": {
-        #         "prompt": {
-        #             "prompt": "The customer's bank account balance is $100. They are based in San Francisco."
-        #         },
-        #         "first_message": "Hi, Dylan, how can I help you today?"
-        #     }
-        # }
