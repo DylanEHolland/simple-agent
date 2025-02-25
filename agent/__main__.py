@@ -24,6 +24,13 @@ async def search(request: Request) -> dict[str, str]:
         "result": result
     }
 
+@app.post("/agent/commit")
+async def search(request: Request) -> dict[str, str]:
+    request_body = await request.json()
+    print(request_body)
+    # result = search_from_query(request_body['search_query'])
+    return {}
+
 @app.get("/agent/get-note")
 async def get_note(request: Request) -> dict[str, str]:
     note = get_note_from_db()
