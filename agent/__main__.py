@@ -47,6 +47,7 @@ async def search(request: Request) -> dict[str, str]:
 async def init(request: Request): # dict[Literal["dynamic_variables", "conversation_config_override"], dict[str, str | dict[str, dict[str, str | dict[str, str]]]]]:
     request_body = await request.json()
     caller_id = request_body['caller_id']
+    print("caller_id:", caller_id)
     user = get_user_from_db(caller_id)
     print("got user:", user)
     if not user:
