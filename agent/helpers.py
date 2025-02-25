@@ -45,6 +45,13 @@ def save_commitment(commitment: Commitment) -> bool:
     else:
         return False
 
+def get_last_commitment(phone_number: str) -> Commitment | None:
+    last_doc = commitments_collection.find_one({"phone_number": phone_number}, sort=[("_id", DESCENDING)])
+    if last_doc:
+        return last_doc
+    else:
+        return None
+
 def get_user_from_db(phone_number: str) -> User | None:
     last_doc = users_collection.find_one({"phone_number": phone_number}, sort=[("_id", DESCENDING)])
     if last_doc:
