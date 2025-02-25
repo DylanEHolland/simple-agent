@@ -50,13 +50,14 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
         "dynamic_variables": {
             "name": "Dylan",
         },
-        "conversation_config_override": {
-            "agent": {
-                "prompt": {
-                    "prompt": "The customer's bank account balance is $100. They are based in San Francisco."
-                },
-                "first_message": "Hi, Dylan, how can I help you today?",
-                "language": "en"
-            }
-        }
     }
+
+
+        # "conversation_config_override": {
+        #     "agent": {
+        #         "prompt": {
+        #             "prompt": "The customer's bank account balance is $100. They are based in San Francisco."
+        #         },
+        #         "first_message": "Hi, Dylan, how can I help you today?"
+        #     }
+        # }
