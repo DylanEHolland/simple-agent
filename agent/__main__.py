@@ -31,3 +31,9 @@ async def get_note(request: Request) -> dict[str, str]:
     return {
         "note": note
     }
+
+@app.post("/agent/init")
+async def init(request: Request) -> dict[str, str]:
+    request_body = await request.json()
+    print(request_body)
+    return {"status": "success"}

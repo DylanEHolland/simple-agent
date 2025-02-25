@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 from pymongo import DESCENDING, MongoClient
 import requests
+from elevenlabs import ElevenLabs
 
 _ = load_dotenv()
 
@@ -15,6 +16,9 @@ MONGO_URI: str | None = os.getenv("MONGODB_URI")
 client = MongoClient(MONGO_URI)
 db = client['eleven_labs_assistant']
 notes_collection = db['notes']
+eleven_labs = ElevenLabs(
+    api_key=os.getenv("ELEVENLABS_API_KEY")
+)
 
 def save_note(note: str) -> bool:
     result = notes_collection.insert_one({"note": note})
@@ -41,6 +45,7 @@ def get_note_from_db() -> str:
 #   };
 
 def query_perplexity(query: str):
+# Searches perplexity
     url = "https://api.perplexity.ai/chat/completions"
 
     
@@ -64,5 +69,17 @@ def query_perplexity(query: str):
     return output
 
 def search_from_query(note: str) -> str:
+# Searches perplexity
     result = query_perplexity(note)
-    return result
+
+    if result:
+        return result
+    else:
+        return "couldn't find any relevant note"
+
+def get_agent(name: str | None = None):
+# Get an agent object by name, current the search is broken on the elevenlabs side
+    if name:
+        return eleven_labs.conversational_ai.get_agents(search=name)
+    else:
+        return eleven_labs.conversational_ai.get_agents()
