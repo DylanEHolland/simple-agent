@@ -41,7 +41,7 @@ async def search(request: Request) -> dict[str, str]:
     return {}
 
 @app.post("/agent/init")
-async def init(request: Request) -> Any: # dict[Literal["dynamic_variables", "conversation_config_override"], dict[str, str | dict[str, dict[str, str | dict[str, str]]]]]:
+async def init(request: Request): # dict[Literal["dynamic_variables", "conversation_config_override"], dict[str, str | dict[str, dict[str, str | dict[str, str]]]]]:
     request_body = await request.json()
 
     print(request_body)
