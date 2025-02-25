@@ -26,15 +26,15 @@ app = FastAPI()
 def read_root() -> dict[str, str]:
     return {}
 
-@app.post("/agent/save-user")
-async def take_note(request: Request) -> dict[str, str]:
-    request_body = await request.json()
-    # if save_note(request_body['note']):
-    #     return {"status": "success"}
-    # else:
-    #     return {"status": "error"}
-    print(request_body)
-    return {}
+# @app.post("/agent/save-user")
+# async def take_note(request: Request) -> dict[str, str]:
+#     request_body = await request.json()
+#     # if save_note(request_body['note']):
+#     #     return {"status": "success"}
+#     # else:
+#     #     return {"status": "error"}
+#     print(request_body)
+#     return {}
 
 @app.post("/agent/commit")
 async def search(request: Request) -> dict[str, str]:
@@ -49,27 +49,24 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
     caller_id = request_body['caller_id']
     user = get_user_from_db(caller_id)
 
+    if not user:
+        return {}
+
     output = {
-        "dynamic_variables": {},
+        "dynamic_variables": {
+            "name": user['name']
+        },
         "conversation_config_override": {
             "agent": {
                 "prompt": {
                     "prompt": "You are a recruiter named RecruitBot and are helping customers to find new employees or contractors to help them."
                 },
+                "first_message": "Hi, Dylan, how can I help you today?"
             }
         }
     }
-
-    if user:
-        print("got here:")
-        name = user['name']
-        output['dynamic_variables']['name'] = name
-
-    else:
-        name = None
-        # output['conversation_config_override']['agent']['prompt']['prompt'] = "The customer's bank account balance is $100. They are based in San Francisco."
-        output['dynamic_variables']['name'] = "None"
-        output['conversation_config_override']['agent']['first_message'] = "Hello, don't think we've met before.  I'm RecruitBot, your recruiter.  What's your name?"
+    
+    print("got here:", user)
 
     return output
 

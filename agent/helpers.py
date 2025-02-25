@@ -1,7 +1,10 @@
+from pymongo.results import InsertOneResult
+
+
 from pymongo.synchronous.mongo_client import MongoClient
 
 
-from typing import Any
+from typing import Any, TypedDict
 
 
 import os
@@ -14,21 +17,33 @@ _ = load_dotenv()
 
 MONGO_URI: str | None = os.getenv("MONGODB_URI")    
 client = MongoClient(MONGO_URI)
-db = client['eleven_labs_assistant']
-notes_collection = db['notes']
+db = client['recruit_bot']
+# notes_collection = db['notes']
+users_collection = db['users']
 eleven_labs = ElevenLabs(
     api_key=os.getenv("ELEVENLABS_API_KEY")
 )
 
-def save_note(note: str) -> bool:
-    result = notes_collection.insert_one({"note": note})
+# def save_note(note: str) -> bool:
+#     result = notes_collection.insert_one({"note": note})
+#     if result.inserted_id:
+#         return True
+#     else:
+#         return False
+
+class User(TypedDict):
+    phone_number: str
+    name: str
+
+def save_user(user: User) -> bool:
+    result: InsertOneResult = users_collection.insert_one(user)
     if result.inserted_id:
         return True
     else:
         return False
 
-def get_user_from_db(phone_number: str) -> str | None:
-    last_doc = notes_collection.find_one({"phone_number": phone_number}, sort=[("_id", DESCENDING)])
+def get_user_from_db(phone_number: str) -> User | None:
+    last_doc = users_collection.find_one({"phone_number": phone_number}, sort=[("_id", DESCENDING)])
     if last_doc:
         return last_doc
     else:
