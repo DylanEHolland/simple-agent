@@ -2,7 +2,7 @@ from os import name
 from typing import Literal, Mapping
 from fastapi import FastAPI, Request
 
-from agent.helpers import get_user_from_db, search_from_query
+from agent.helpers import get_user_from_db, save_commitment, search_from_query
 
 app = FastAPI()
 
@@ -39,9 +39,10 @@ def read_root() -> dict[str, str]:
 @app.post("/agent/commit")
 async def search(request: Request) -> dict[str, str]:
     request_body = await request.json()
-    print(request_body)
-    # result = search_from_query(request_body['search_query'])
-    return {}
+    save_commitment(request_body)
+    return {
+        "status": "success"
+    }
 
 @app.post("/agent/init")
 async def init(request: Request): # dict[Literal["dynamic_variables", "conversation_config_override"], dict[str, str | dict[str, dict[str, str | dict[str, str]]]]]:
