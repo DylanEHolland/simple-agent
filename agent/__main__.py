@@ -2,7 +2,7 @@ from os import name
 from typing import Literal, Mapping
 from fastapi import FastAPI, Request
 
-from agent.helpers import get_user_from_db, save_commitment, search_from_query
+from agent.helpers import get_user_from_db, save_commitment
 
 app = FastAPI()
 
