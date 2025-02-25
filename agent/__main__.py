@@ -55,7 +55,8 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
 
     output = {
         "dynamic_variables": {
-            "name": user['name']
+            "name": user['name'],
+            "_id": user['_id']
         },
         "conversation_config_override": {
             "agent": {

@@ -32,6 +32,7 @@ eleven_labs = ElevenLabs(
 #         return False
 
 class User(TypedDict):
+    _id: str
     phone_number: str
     name: str
 
