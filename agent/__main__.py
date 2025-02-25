@@ -1,7 +1,8 @@
+from os import name
 from typing import Literal, Mapping
 from fastapi import FastAPI, Request
 
-from agent.helpers import get_note_from_db, save_note, search_from_query
+from agent.helpers import get_note_from_db, get_user_from_db, save_note, search_from_query
 
 app = FastAPI()
 
@@ -25,13 +26,15 @@ app = FastAPI()
 def read_root() -> dict[str, str]:
     return {}
 
-@app.post("/agent/take-note")
+@app.post("/agent/save-user")
 async def take_note(request: Request) -> dict[str, str]:
     request_body = await request.json()
-    if save_note(request_body['note']):
-        return {"status": "success"}
-    else:
-        return {"status": "error"}
+    # if save_note(request_body['note']):
+    #     return {"status": "success"}
+    # else:
+    #     return {"status": "error"}
+    print(request_body)
+    return {}
 
 @app.post("/agent/commit")
 async def search(request: Request) -> dict[str, str]:
@@ -43,21 +46,32 @@ async def search(request: Request) -> dict[str, str]:
 @app.post("/agent/init")
 async def init(request: Request): # dict[Literal["dynamic_variables", "conversation_config_override"], dict[str, str | dict[str, dict[str, str | dict[str, str]]]]]:
     request_body = await request.json()
+    caller_id = request_body['caller_id']
+    user = get_user_from_db(caller_id)
 
-    print(request_body)
-    
-    return {
-        "dynamic_variables": {
-            "name": "Dylan",
-        },
+    output = {
+        "dynamic_variables": {},
         "conversation_config_override": {
             "agent": {
                 "prompt": {
-                    "prompt": "The customer's bank account balance is $100. They are based in San Francisco."
+                    "prompt": "You are a recruiter named RecruitBot and are helping customers to find new employees or contractors to help them."
                 },
             }
         }
     }
+
+    if user:
+        print("got here:")
+        name = user['name']
+        output['dynamic_variables']['name'] = name
+
+    else:
+        name = None
+        # output['conversation_config_override']['agent']['prompt']['prompt'] = "The customer's bank account balance is $100. They are based in San Francisco."
+        output['dynamic_variables']['name'] = "None"
+        output['conversation_config_override']['agent']['first_message'] = "Hello, don't think we've met before.  I'm RecruitBot, your recruiter.  What's your name?"
+
+    return output
 
 
         # "conversation_config_override": {

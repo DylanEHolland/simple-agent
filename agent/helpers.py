@@ -27,12 +27,12 @@ def save_note(note: str) -> bool:
     else:
         return False
 
-def get_note_from_db() -> str:
-    last_doc = notes_collection.find_one(sort=[("_id", DESCENDING)])
+def get_user_from_db(phone_number: str) -> str | None:
+    last_doc = notes_collection.find_one({"phone_number": phone_number}, sort=[("_id", DESCENDING)])
     if last_doc:
-        return last_doc['note']
+        return last_doc
     else:
-        return "couldn't find any relevant note"
+        return None
 
 #   const body = {
 #     model: metaData?.model || "llama-3.1-sonar-large-128k-online", // Specify the model
