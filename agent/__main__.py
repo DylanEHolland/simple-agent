@@ -46,7 +46,7 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
 
     last_commitment: Commitment | None = get_last_commitment(caller_id)
     if last_commitment:
-        output["conversation_config_override"]["agent"]["first_message"] = f"Hi, {name}, how can I help you today?  How did things go with {last_commitment['firstName']}?"
+        output["conversation_config_override"]["agent"]["first_message"] = f"Hi, {user['name']}, how can I help you today?  How did things go with {last_commitment['firstName']}?"
     
     print("got here:", user)
 
