@@ -48,7 +48,7 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
     request_body = await request.json()
     caller_id = request_body['caller_id']
     user = get_user_from_db(caller_id)
-
+    print("got user:", user)
     if not user:
         return {}
 
