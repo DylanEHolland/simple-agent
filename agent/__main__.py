@@ -40,7 +40,13 @@ async def get_note(request: Request) -> dict[str, str]:
     }
 
 @app.post("/agent/init")
-async def init(request: Request) -> dict[str, str]:
+async def init(request: Request) -> dict[str, dict[str, str]]:
     request_body = await request.json()
+    
     print(request_body)
-    return {"status": "success"}
+    
+    return {
+        "dynamic_variables": {
+            "name": "Dylan",
+        }
+    }
