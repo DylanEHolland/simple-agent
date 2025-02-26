@@ -39,7 +39,7 @@ async def init(request: Request): # dict[Literal["dynamic_variables", "conversat
                 "prompt": {
                     "prompt": "You are a recruiter named RecruitBot and are helping customers to find new employees or contractors to help them."
                 },
-                "first_message": "Hi, {name}, how can I help you today?"
+                "first_message": f"Hi, {user['name']}, how can I help you today?"
             }
         }
     }
